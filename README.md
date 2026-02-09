@@ -23,3 +23,8 @@ Each module folder contains its own README with wiring, build instructions, and 
 ## Resources
 
 See `Documentation/` for Arduino setup guides, drivers, and reference materials.
+
+## Connect With Us
+
+- **YouTube**: [@lightbrain-tech](https://www.youtube.com/@lightbrain-tech) — tutorials, walkthroughs, and live sessions
+- **X (Twitter)**: [@LightBrain_](https://x.com/LightBrain_)

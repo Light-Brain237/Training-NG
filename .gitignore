@@ -2,3 +2,6 @@ P3*/
 P4*/
 P5*/
 P6*/
+
+# MediaPipe model files (large binary, auto-downloaded)
+*.task
