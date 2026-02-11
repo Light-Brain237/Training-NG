@@ -1,0 +1,407 @@
+#ifndef MOTOR_CONTROL_HTML_H
+#define MOTOR_CONTROL_HTML_H
+
+const char motor_control_html[] PROGMEM = R"rawliteral(
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Motor Speed Control</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+            max-width: 500px;
+            width: 100%;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 28px;
+        }
+        
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+        
+        .status-bar {
+            background: #f5f5f5;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .status-item {
+            margin: 5px 0;
+        }
+        
+        .status-label {
+            color: #666;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .status-value {
+            color: #333;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .direction-indicator {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+        
+        .dir-forward {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .dir-backward {
+            background: #FF9800;
+            color: white;
+        }
+        
+        .dir-stopped {
+            background: #f44336;
+            color: white;
+        }
+        
+        .speed-control {
+            margin: 30px 0;
+        }
+        
+        .speed-label {
+            color: #333;
+            font-size: 16px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .speed-value {
+            font-size: 32px;
+            font-weight: bold;
+            color: #667eea;
+        }
+        
+        .slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 12px;
+            border-radius: 6px;
+            background: #ddd;
+            outline: none;
+            transition: background 0.3s;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+        
+        .slider::-webkit-slider-thumb:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
+            transition: all 0.3s;
+        }
+        
+        .slider::-moz-range-thumb:hover {
+            background: #764ba2;
+            transform: scale(1.1);
+        }
+        
+        .speed-markers {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            color: #999;
+            font-size: 12px;
+        }
+        
+        .direction-controls {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+            margin-top: 30px;
+        }
+        
+        .btn {
+            padding: 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            color: white;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .btn-forward {
+            background: #4CAF50;
+        }
+        
+        .btn-forward:hover {
+            background: #45a049;
+        }
+        
+        .btn-backward {
+            background: #FF9800;
+        }
+        
+        .btn-backward:hover {
+            background: #f57c00;
+        }
+        
+        .btn-stop {
+            background: #f44336;
+        }
+        
+        .btn-stop:hover {
+            background: #da190b;
+        }
+        
+        .connection-status {
+            text-align: center;
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 12px;
+        }
+        
+        .connected {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .disconnected {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .speed-value {
+                font-size: 28px;
+            }
+            
+            .btn {
+                padding: 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚗 Motor Control</h1>
+        <p class="subtitle">Web-Based Speed Controller</p>
+        
+        <div class="status-bar">
+            <div class="status-item">
+                <div class="status-label">Current Speed</div>
+                <div class="status-value" id="currentSpeed">0%</div>
+            </div>
+            <div class="status-item">
+                <div class="status-label">Direction</div>
+                <div class="direction-indicator dir-stopped" id="currentDirection">STOPPED</div>
+            </div>
+        </div>
+        
+        <div class="speed-control">
+            <div class="speed-label">
+                <span>Speed Control</span>
+                <span class="speed-value" id="speedValue">0%</span>
+            </div>
+            <input type="range" min="0" max="100" value="0" class="slider" id="speedSlider">
+            <div class="speed-markers">
+                <span>0%</span>
+                <span>25%</span>
+                <span>50%</span>
+                <span>75%</span>
+                <span>100%</span>
+            </div>
+        </div>
+        
+        <div class="direction-controls">
+            <button class="btn btn-forward" onclick="setDirection('F')">
+                ⬆<br>Forward
+            </button>
+            <button class="btn btn-backward" onclick="setDirection('B')">
+                ⬇<br>Backward
+            </button>
+            <button class="btn btn-stop" onclick="setDirection('S')">
+                ⏹<br>Stop
+            </button>
+        </div>
+        
+        <div class="connection-status connected" id="connectionStatus">
+            ● Connected to ESP32
+        </div>
+    </div>
+    
+    <script>
+        const slider = document.getElementById('speedSlider');
+        const speedValue = document.getElementById('speedValue');
+        const currentSpeed = document.getElementById('currentSpeed');
+        const currentDirection = document.getElementById('currentDirection');
+        const connectionStatus = document.getElementById('connectionStatus');
+        
+        let lastSpeed = 0;
+        
+        slider.oninput = function() {
+            speedValue.textContent = this.value + '%';
+        }
+        
+        slider.onchange = function() {
+            const speed = this.value;
+            if (speed != lastSpeed) {
+                sendSpeed(speed);
+                lastSpeed = speed;
+            }
+        }
+        
+        function sendSpeed(speed) {
+            fetch('/speed', {
+                method: 'POST',
+                body: speed.toString()
+            })
+            .then(response => response.json())
+            .then(data => {
+                currentSpeed.textContent = data.speed + '%';
+                showConnected();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showDisconnected();
+            });
+        }
+        
+        function setDirection(dir) {
+            fetch('/direction', {
+                method: 'POST',
+                body: dir
+            })
+            .then(response => response.json())
+            .then(data => {
+                updateDirection(data.direction);
+                showConnected();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showDisconnected();
+            });
+        }
+        
+        function updateDirection(direction) {
+            currentDirection.textContent = direction;
+            currentDirection.className = 'direction-indicator';
+            
+            if (direction === 'FORWARD') {
+                currentDirection.classList.add('dir-forward');
+            } else if (direction === 'BACKWARD') {
+                currentDirection.classList.add('dir-backward');
+            } else {
+                currentDirection.classList.add('dir-stopped');
+            }
+        }
+        
+        function showConnected() {
+            connectionStatus.className = 'connection-status connected';
+            connectionStatus.textContent = '● Connected to ESP32';
+        }
+        
+        function showDisconnected() {
+            connectionStatus.className = 'connection-status disconnected';
+            connectionStatus.textContent = '● Connection Error';
+        }
+        
+        function updateStatus() {
+            fetch('/status')
+            .then(response => response.json())
+            .then(data => {
+                slider.value = data.speed;
+                speedValue.textContent = data.speed + '%';
+                currentSpeed.textContent = data.speed + '%';
+                updateDirection(data.direction);
+                showConnected();
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showDisconnected();
+            });
+        }
+        
+        setInterval(updateStatus, 2000);
+        updateStatus();
+    </script>
+</body>
+</html>
+)rawliteral";
+
+#endif
