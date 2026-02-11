@@ -29,3 +29,5 @@ See `Documentation/` for Arduino setup guides, drivers, and reference materials.
 - **YouTube**: [@lightbrain-tech](https://www.youtube.com/@lightbrain-tech) — tutorials, walkthroughs, and live sessions
 - **X (Twitter)**: [@LightBrain\_](https://x.com/LightBrain_)
 - **Discord**: [Join our community](http://discord.gg/Y2Rm2WE5H) — ask questions, share projects, and connect with other learners
+
+https://chat.whatsapp.com/IM1n7xxPUZ89UCtg5dOqS7?mode=gi_t
