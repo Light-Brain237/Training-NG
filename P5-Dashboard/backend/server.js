@@ -20,6 +20,9 @@ const cors = require("cors");
 const http = require("http");
 const { WebSocketServer } = require("ws");
 
+// Load .env file
+require("dotenv").config();
+
 // ─── Configuration ──────────────────────────────────────────────────
 const ESP32_IP = process.env.ESP32_IP || "192.168.1.100";
 const PORT = parseInt(process.env.PORT, 10) || 3001;
