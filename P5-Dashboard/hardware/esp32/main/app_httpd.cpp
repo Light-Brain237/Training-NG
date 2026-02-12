@@ -18,6 +18,7 @@
 #include "esp_camera.h"
 #include "img_converters.h"
 #include "Arduino.h"
+#include "WiFi.h"
 
 // ─── Shared state from main.ino ─────────────────────────────────────
 extern int gpLed;
