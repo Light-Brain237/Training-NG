@@ -1,6 +1,6 @@
 # P5-Dashboard — IoT Robot Dashboard (Express + React)
 
-**Module 7 of the ESP32-Arduino IoT Robotics Training**
+**Module 5 of the ESP32-Arduino IoT Robotics Training**
 
 This module replaces the ESP32-hosted web interface from earlier modules with a professional full-stack dashboard built with **Node.js Express** (backend) and **React + TypeScript** (frontend). The ESP32 exposes a CORS-enabled REST API instead of serving HTML, and an Express server polls telemetry and broadcasts it to connected dashboards via **WebSocket**.
 
