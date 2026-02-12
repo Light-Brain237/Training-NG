@@ -17,8 +17,8 @@
 #include <WiFi.h>
 
 // ─── WiFi credentials ───────────────────────────────────────────────
-const char *ssid = "TP-LINK_4E81";
-const char *password = "Jk123456789";
+const char *ssid = "**************";
+const char *password = "*************";
 
 // ─── Camera pin definitions (AI Thinker ESP32-CAM) ──────────────────
 #define PWDN_GPIO_NUM 32
